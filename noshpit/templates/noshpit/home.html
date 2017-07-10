@@ -1,4 +1,8 @@
-<h1>HellooooooO!!!</h1>
+{% extends 'noshpit/base.html' %}
 
-<h1><a href="{% url 'start' %}">Start a Pit</a></h1>
-<h1><a href="{% url 'join' %}">Join a pit</a></h1>
+{% block content %}
+  <h1>HellooooooO!!!</h1>
+
+  <h1><a href="{% url 'start' %}">Start a Pit</a></h1>
+  <h1><a href="{% url 'join' %}">Join a pit</a></h1>
+{% endblock %}

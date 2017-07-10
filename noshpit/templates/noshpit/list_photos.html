@@ -1,6 +1,9 @@
+{% extends 'noshpit/base.html' %}
 
+{% block content %}
     {% for photo in photos %}
         <div class="photo">
-              <img src="{{ photo.url }}" alt="food-photo" />
+            <img src="{{ photo.url }}" alt="food-photo" />
         </div>
     {% endfor %}
+{% endblock %}
