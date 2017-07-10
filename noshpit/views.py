@@ -5,8 +5,6 @@ def home(request):
 
 def start_a_pit(request):
     return render(request, 'noshpit/start_a_pit.html', {})
-    pass
 
 def join_a_pit(request):
     return render(request, 'noshpit/join_a_pit.html', {})
-    pass

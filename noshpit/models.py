@@ -8,7 +8,7 @@ class Location(models.Model):
         return self.name
 
 class Photo(models.Model):
-    location = models.ForeignKey(Location)
+    location = models.ForeignKey(Location, on_delete=models.CASCADE)
     url = models.CharField(max_length=300)
 
 class Pit(models.Model):
