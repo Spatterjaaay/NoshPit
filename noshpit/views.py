@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.conf import settings
-from .models import Photo
+from .models import Photo, Location
 import requests
 import json
 from pprint import pprint
@@ -22,20 +22,22 @@ def list_photos(request):
     response = requests.get(url)
     restaurants = json.loads(response.text)
     # might need to make additional queries "next_page_token"
-    # need restaurants["results"][0]["place_id"] and ["name"]
-    # pprint(restaurants)
-    restaurant_names = []
+
     for restaurant in restaurants["results"]:
-        # print(restaurant["place_id"])
-        # print(restaurant["name"])
-        # x = Location(place_id=restaurant["place_id"], name=restaurant["name"])
-        # x.save()
+        # if place_id already exists in the database
+            # do nothing
+        # else
+        location = Location(place_id=restaurant["place_id"], name=restaurant["name"])
+        location.save()
+
         # request photos
-        restaurant_names.append(restaurant["name"])
+
+
     # r = requests.get('https://maps.googleapis.com/...', allow_redirects=False)
     # r.headers["Location"]
 
 
     # photos = Photo.objects.all()
     # return render(request, 'noshpit/list_photos.html', {'photos':photos})
-    return render(request, 'noshpit/list_photos.html', {'restaurant_names':restaurant_names})
+    restaurant_names = Location.objects.all()
+    return render(request, 'noshpit/list_photos.html', {'restaurant_names': restaurant_names})

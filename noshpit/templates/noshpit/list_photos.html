@@ -4,7 +4,7 @@
     {% for restaurant_name in restaurant_names %}
         <div class="photo">
             <!-- <img src="{{ photo.url }}" alt="food-photo" /> -->
-            <p>{{ restaurant_name }}</p>
+            <p>{{ restaurant_name.name }}</p>
         </div>
     {% endfor %}
 {% endblock %}

@@ -1,7 +1,7 @@
 from django.db import models
 
 class Location(models.Model):
-    place_id = models.CharField(max_length=300)
+    place_id = models.CharField(max_length=300, unique=True)
     name = models.CharField(max_length=200)
 
     def __str__(self):
