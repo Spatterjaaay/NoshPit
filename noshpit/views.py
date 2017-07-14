@@ -1,16 +1,33 @@
 from django.shortcuts import render, get_object_or_404
 from django.conf import settings
 from django.db import IntegrityError
+
 from .models import Photo, Location
+from pprint import pprint
+from .forms import PitForm
 import requests, logging
 import json
-from pprint import pprint
 
 def home(request):
     return render(request, 'noshpit/home.html', {})
 
 def start_a_pit(request):
-    return render(request, 'noshpit/start_a_pit.html', {})
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = PitForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            # ...
+            # redirect to a new URL:
+            return render(request, 'noshpit/start_a_pit.html', {'form': form})
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = PitForm()
+
+    return render(request, 'noshpit/start_a_pit.html', {'form': form})
 
 def join_a_pit(request):
     return render(request, 'noshpit/join_a_pit.html', {})
