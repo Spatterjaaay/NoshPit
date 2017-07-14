@@ -9,7 +9,7 @@ class Location(models.Model):
 
 class Photo(models.Model):
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
-    url = models.CharField(max_length=300)
+    url = models.CharField(max_length=300, unique=True)
 
 class Pit(models.Model):
     token = models.CharField(max_length=5)

@@ -1,10 +1,10 @@
 {% extends 'noshpit/base.html' %}
 
 {% block content %}
-    {% for restaurant_name in restaurant_names %}
+    {% for photo in photos %}
         <div class="photo">
-            <!-- <img src="{{ photo.url }}" alt="food-photo" /> -->
-            <p>{{ restaurant_name.name }}</p>
+            <img src="{{ photo.url }}" alt="food-photo" />
+            <!-- <p>{{ restaurant_name.name }}</p> -->
         </div>
     {% endfor %}
 {% endblock %}
