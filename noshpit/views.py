@@ -27,7 +27,6 @@ def list_photos(request):
     # response.status not equal 200 do something
     restaurants = json.loads(response.text)
     # might need to make additional queries "next_page_token"
-
     photos = []
 
     for restaurant in restaurants["results"]:
@@ -37,12 +36,11 @@ def list_photos(request):
         except IntegrityError:
             logging.info("This location already exists")
             location = Location.objects.get(place_id=restaurant["place_id"])
-            location_photos = Photo.objects.get(location=location)
-            # gets photos from the databse
+            location_photos = Photo.objects.filter(location=location)
+            # gets photos from the database
             photos += location_photos
+            # if location already exists, no need to make extra api calls
             continue
-            # maybe insert continue, so it doesn't do unneccessary api calls?
-            # make sure that that location has some photos
 
         placeid = '&placeid=' + restaurant["place_id"]
         response = requests.get(url + details_search + key + placeid)
@@ -51,12 +49,11 @@ def list_photos(request):
         for detail in details["result"]["photos"]:
             max_height = '&maxheight=600'
             photoreference = '&photoreference=' + detail["photo_reference"]
-            # r = requests.get('https://maps.googleapis.com/...', allow_redirects=False)
-            # r.headers["Location"]
+
             response = requests.get(url + photo_search + key + max_height + photoreference, allow_redirects=False)
             photo_url = response.headers["Location"]
 
-            #  Location.objects.get(place_id=restaurant["place_id"]
+            #  creates a photo object
             photo = Photo(location=location, url=photo_url)
 
             try:
