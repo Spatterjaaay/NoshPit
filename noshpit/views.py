@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 from django.db import IntegrityError
 
@@ -21,7 +21,7 @@ def start_a_pit(request):
             # process the data in form.cleaned_data as required
             # ...
             # redirect to a new URL:
-            return render(request, 'noshpit/start_a_pit.html', {'form': form})
+            return redirect('start_noshing')
 
     # if a GET (or any other method) we'll create a blank form
     else:
@@ -32,6 +32,8 @@ def start_a_pit(request):
 def join_a_pit(request):
     return render(request, 'noshpit/join_a_pit.html', {})
 
+# turn this into a private function that will retrieve the photo urls and
+# create a joing table between locations and a pit 
 def list_photos(request):
     url = 'https://maps.googleapis.com/maps/api/place'
     place_search = '/nearbysearch/json?key='
