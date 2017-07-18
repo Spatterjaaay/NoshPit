@@ -47,9 +47,19 @@ def start_noshing(request):
 
 def list_photos(request):
     # finds photos assigned to a specific pit and randomizes their order
-    pit_photos = PitPhoto.objects.filter(pit__token="1").order_by('?')
-    return render(request, 'noshpit/list_photos.html', {'pit_photos': pit_photos})
-    pass
+
+    if "phtoto_index" not in request.session:
+        index = 0
+        pit_photos = PitPhoto.objects.filter(pit__token="1").order_by('?')
+        request.session["pit_photos"] = pit_photos
+    else:
+        index = request.session["photo_index"] + 1
+        pit_photos = request.session["pit_photos"]
+
+    request.session["photo_index"] = index
+    pit_photo = pit_photos[index]
+
+    return render(request, 'noshpit/list_photos.html', {'pit_photo': pit_photo})
 
 # turn this into a private function that will retrieve the photo urls and
 # create a joing table between locations and a pit
