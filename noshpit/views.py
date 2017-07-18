@@ -38,6 +38,7 @@ def start_a_pit(request):
     return render(request, 'noshpit/start_a_pit.html', {'form': form})
 
 def join_a_pit(request):
+    # find the photos based on a pit id passed through a form
     return render(request, 'noshpit/join_a_pit.html', {})
 
 def start_noshing(request):
@@ -45,6 +46,9 @@ def start_noshing(request):
     pass
 
 def list_photos(request):
+    # finds photos assigned to a specific pit and randomizes their order
+    pit_photos = PitPhoto.objects.filter(pit__token="1").order_by('?')
+    return render(request, 'noshpit/list_photos.html', {'pit_photos': pit_photos})
     pass
 
 # turn this into a private function that will retrieve the photo urls and
