@@ -14,7 +14,7 @@ class Photo(models.Model):
 class Pit(models.Model):
     token = models.CharField(max_length=5)
 
-class PitPhotos(models.Model):
+class PitPhoto(models.Model):
     photo = models.ForeignKey(Photo)
     pit = models.ForeignKey(Pit)
 

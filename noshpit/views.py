@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 from django.db import IntegrityError
 
-from .models import Photo, Location
+from .models import Photo, Location, Pit, PitPhoto
 from pprint import pprint
 from .forms import PitForm
 import requests, logging
@@ -19,9 +19,15 @@ def start_a_pit(request):
         # check whether it's valid:
         if form.is_valid():
             # process the data in form.cleaned_data as required
-            # ...
-            # redirect to a new URL:
-            __find_photos__(form):
+            # find all the photos that conform to the form requirements
+            photos = __find_photos__(form)
+            # associate the photos with a pit ID and save them
+            pit = Pit.objects.get(token="1")
+            for photo in photos:
+                pit_photo = PitPhoto(photo=photo, pit=pit)
+                pit_photo.save()
+
+
             # need to create a new template start_noshing, and new view
             return redirect('start_noshing')
 
@@ -44,14 +50,16 @@ def list_photos(request):
 # turn this into a private function that will retrieve the photo urls and
 # create a joing table between locations and a pit
 def __find_photos__(form):
+
     url = 'https://maps.googleapis.com/maps/api/place'
     place_search = '/nearbysearch/json?key='
     details_search = '/details/json?key='
     photo_search = '/photo?key='
     key = settings.PLACES_KEY
+    radius = '&radius' + str(form.cleaned_data["distance"])
     location_type = '&location=47.608090, -122.335000&radius=500&type=restaurant'
 
-    response = requests.get(url + place_search + key + location_type)
+    response = requests.get(url + place_search + key + radius + location_type)
     # response.status not equal 200 do something
     restaurants = json.loads(response.text)
     # might need to make additional queries "next_page_token"
