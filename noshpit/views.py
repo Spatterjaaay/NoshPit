@@ -21,6 +21,8 @@ def start_a_pit(request):
             # process the data in form.cleaned_data as required
             # ...
             # redirect to a new URL:
+            __find_photos__(form):
+            # need to create a new template start_noshing, and new view
             return redirect('start_noshing')
 
     # if a GET (or any other method) we'll create a blank form
@@ -32,9 +34,16 @@ def start_a_pit(request):
 def join_a_pit(request):
     return render(request, 'noshpit/join_a_pit.html', {})
 
-# turn this into a private function that will retrieve the photo urls and
-# create a joing table between locations and a pit 
+def start_noshing(request):
+    return render(request, 'noshpit/start_noshing.html', {})
+    pass
+
 def list_photos(request):
+    pass
+
+# turn this into a private function that will retrieve the photo urls and
+# create a joing table between locations and a pit
+def __find_photos__(form):
     url = 'https://maps.googleapis.com/maps/api/place'
     place_search = '/nearbysearch/json?key='
     details_search = '/details/json?key='
@@ -87,4 +96,4 @@ def list_photos(request):
     # find a spot to save the randomized list of photos
     # push that out to the user one at a time
     # (another view that would return one photo and pop it and call it on every click of a button)
-    return render(request, 'noshpit/list_photos.html', {'photos':photos})
+    return photos
