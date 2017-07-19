@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 from django.db import IntegrityError
+from django.core import serializers
 
 from .models import Photo, Location, Pit, PitPhoto
 from pprint import pprint
@@ -27,7 +28,6 @@ def start_a_pit(request):
                 pit_photo = PitPhoto(photo=photo, pit=pit)
                 pit_photo.save()
 
-
             # need to create a new template start_noshing, and new view
             return redirect('start_noshing')
 
@@ -48,16 +48,19 @@ def start_noshing(request):
 def list_photos(request):
     # finds photos assigned to a specific pit and randomizes their order
 
-    if "phtoto_index" not in request.session:
+    if "photo_index" not in request.session:
         index = 0
         pit_photos = PitPhoto.objects.filter(pit__token="1").order_by('?')
+        pit_photos = [pit_photo.id for pit_photo in pit_photos]
+        print(pit_photos)
         request.session["pit_photos"] = pit_photos
     else:
         index = request.session["photo_index"] + 1
         pit_photos = request.session["pit_photos"]
 
     request.session["photo_index"] = index
-    pit_photo = pit_photos[index]
+    print(pit_photos[index])
+    pit_photo = PitPhoto.objects.get(id=pit_photos[index])
 
     return render(request, 'noshpit/list_photos.html', {'pit_photo': pit_photo})
 
