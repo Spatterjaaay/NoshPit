@@ -3,7 +3,7 @@ from django.conf import settings
 from django.db import IntegrityError
 from django.core import serializers
 
-from .models import Photo, Location, Pit, PitPhoto
+from .models import Photo, Location, Pit, PitPhoto, User, Vote
 from pprint import pprint
 from .forms import PitForm
 import requests, logging
@@ -67,6 +67,14 @@ def list_photos(request):
     return render(request, 'noshpit/list_photos.html', {'pit_photo': pit_photo})
 
 def yes(request):
+    # create a vote
+    pit_photo = PitPhoto.objects.get(id=request.session["pit_photos"][request.session["photo_index"]])
+    location = pit_photo.photo.location
+    pit = Pit.objects.get(token="1")
+    user = User.objects.get(id="1")
+    vote = Vote(location=location, user=user, pit=pit)
+    vote.save()
+
     return redirect('photos')
 
 # turn this into a private function that will retrieve the photo urls and
