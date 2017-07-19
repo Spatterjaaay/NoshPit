@@ -2,9 +2,10 @@
 
 {% block content %}
 
-        <div class="photo">
-            <img src="{{ pit_photo.photo.url }}" alt="food-photo" />
-            <!-- <p>{{ restaurant_name.name }}</p> -->
-        </div>
+    <div class="photo">
+        <img src="{{ pit_photo.photo.url }}" alt="food-photo" />
+    </div>
 
+<a class="btn btn-default" href="{% url 'yes' %}">Yes! :-)</a>
+<a class="btn btn-default" href="{% url 'photos' %}">No >.<</a>
 {% endblock %}

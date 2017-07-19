@@ -66,6 +66,9 @@ def list_photos(request):
 
     return render(request, 'noshpit/list_photos.html', {'pit_photo': pit_photo})
 
+def yes(request):
+    return redirect('photos')
+
 # turn this into a private function that will retrieve the photo urls and
 # create a joing table between locations and a pit
 def __find_photos__(form):

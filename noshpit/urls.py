@@ -7,5 +7,5 @@ urlpatterns = [
     url(r'^join$', views.join_a_pit, name='join'),
     url(r'^photos$', views.list_photos, name='photos'),
     url(r'^noshing$', views.start_noshing, name='start_noshing'),
-
+    url(r'^yes$', views.yes, name='yes'),
 ]
