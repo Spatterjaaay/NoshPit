@@ -62,6 +62,8 @@ def list_photos(request):
     print(pit_photos[index])
     pit_photo = PitPhoto.objects.get(id=pit_photos[index])
 
+    # once we hit the last index redirect to another template
+
     return render(request, 'noshpit/list_photos.html', {'pit_photo': pit_photo})
 
 # turn this into a private function that will retrieve the photo urls and
