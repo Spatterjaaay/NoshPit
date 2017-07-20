@@ -6,7 +6,7 @@ from django.core import serializers
 from .models import Photo, Location, Pit, PitPhoto, User, Vote
 from pprint import pprint
 from .forms import PitForm
-import requests, logging
+import requests, logging, random, string
 import json
 
 def home(request):
@@ -76,6 +76,15 @@ def yes(request):
     vote.save()
 
     return redirect('photos')
+
+def new_pit(request):
+    token = ''.join(random.choices(string.ascii_uppercase + string.digits, k=5))
+    pit = Pit(token=token)
+    pit.save()
+    request.session["pit_id"] = pit.id
+
+    return render(request, 'noshpit/start_a_pit.html', {'token': token})
+
 
 # turn this into a private function that will retrieve the photo urls and
 # create a joing table between locations and a pit
