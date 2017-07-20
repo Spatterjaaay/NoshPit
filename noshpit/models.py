@@ -19,7 +19,7 @@ class PitPhoto(models.Model):
     pit = models.ForeignKey(Pit)
 
 class User(models.Model):
-    pass
+    pit = models.ForeignKey(Pit, on_delete=models.CASCADE)
 
 class Vote(models.Model):
     pit = models.ForeignKey(Pit)
