@@ -5,7 +5,7 @@ from django.core import serializers
 
 from .models import Photo, Location, Pit, PitPhoto, User, Vote
 from pprint import pprint
-from .forms import PitForm
+from .forms import PitForm, JoinForm
 import requests, logging, random, string
 import json
 
@@ -13,6 +13,7 @@ def home(request):
     return render(request, 'noshpit/home.html', {})
 
 def start_a_pit(request):
+    # create user and associate them with a pit
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
@@ -23,7 +24,7 @@ def start_a_pit(request):
             # find all the photos that conform to the form requirements
             photos = __find_photos__(form)
             # associate the photos with a pit ID and save them
-            pit = Pit.objects.get(token="1")
+            pit = Pit.objects.get(id=request.session["pit_id"])
             for photo in photos:
                 pit_photo = PitPhoto(photo=photo, pit=pit)
                 pit_photo.save()
@@ -43,12 +44,27 @@ def start_a_pit(request):
     return render(request, 'noshpit/start_a_pit.html', {'form': form, 'token': token})
 
 def join_a_pit(request):
-    # find the photos based on a pit id passed through a form
-    return render(request, 'noshpit/join_a_pit.html', {})
+    # create user
+
+    if request.method == 'POST':
+        form = JoinForm(request.POST)
+
+        if form.is_valid():
+            pit = Pit.objects.get(token=form.cleaned_data["token"])
+            request.session["pit_id"] = pit.id
+
+            return redirect('start_noshing')
+
+    else:
+        form = JoinForm()
+
+    return render(request, 'noshpit/join_a_pit.html', {'form': form})
 
 def start_noshing(request):
-    return render(request, 'noshpit/start_noshing.html', {})
-    pass
+    print(request.session["pit_id"])
+    pit = Pit.objects.get(id=request.session["pit_id"])
+    pit_token = pit.token
+    return render(request, 'noshpit/start_noshing.html', {'pit_token':pit_token})
 
 def list_photos(request):
     # finds photos assigned to a specific pit and randomizes their order
@@ -75,7 +91,7 @@ def yes(request):
     # create a vote
     pit_photo = PitPhoto.objects.get(id=request.session["pit_photos"][request.session["photo_index"]])
     location = pit_photo.photo.location
-    pit = Pit.objects.get(token="1")
+    pit = Pit.objects.get(id=request.session["pit_id"])
     user = User.objects.get(id="1")
     vote = Vote(location=location, user=user, pit=pit)
     vote.save()
