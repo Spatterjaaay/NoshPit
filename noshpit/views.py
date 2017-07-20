@@ -14,6 +14,7 @@ def home(request):
 
 def start_a_pit(request):
     # create user and associate them with a pit
+    user = User(pit)
 
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
@@ -37,10 +38,17 @@ def start_a_pit(request):
     else:
         form = PitForm()
 
-        token = ''.join(random.choices(string.ascii_uppercase + string.digits, k=5))
-        pit = Pit(token=token)
-        pit.save()
-        request.session["pit_id"] = pit.id
+        # doesn't create a new pit on reload
+        if "pit_id" not in request.session:
+            token = ''.join(random.choices(string.ascii_uppercase + string.digits, k=5))
+            pit = Pit(token=token)
+            pit.save()
+            request.session["pit_id"] = pit.id
+
+        if "user_id" not in request.session:
+            user = User(pit=pit)
+            user.save()
+            request.session["user_id"] = user.id
 
     return render(request, 'noshpit/start_a_pit.html', {'form': form, 'token': token})
 
@@ -53,6 +61,11 @@ def join_a_pit(request):
         if form.is_valid():
             pit = Pit.objects.get(token=form.cleaned_data["token"])
             request.session["pit_id"] = pit.id
+
+            if "user_id" not in request.session:
+                user = User(pit=pit)
+                user.save()
+                request.session["user_id"] = user.id
 
             return redirect('start_noshing')
 
@@ -93,7 +106,7 @@ def yes(request):
     pit_photo = PitPhoto.objects.get(id=request.session["pit_photos"][request.session["photo_index"]])
     location = pit_photo.photo.location
     pit = Pit.objects.get(id=request.session["pit_id"])
-    user = User.objects.get(id="1")
+    user = User.objects.get(id=request.session["user_id"])
     vote = Vote(location=location, user=user, pit=pit)
     vote.save()
 
