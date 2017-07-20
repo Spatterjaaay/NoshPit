@@ -35,7 +35,12 @@ def start_a_pit(request):
     else:
         form = PitForm()
 
-    return render(request, 'noshpit/start_a_pit.html', {'form': form})
+        token = ''.join(random.choices(string.ascii_uppercase + string.digits, k=5))
+        pit = Pit(token=token)
+        pit.save()
+        request.session["pit_id"] = pit.id
+
+    return render(request, 'noshpit/start_a_pit.html', {'form': form, 'token': token})
 
 def join_a_pit(request):
     # find the photos based on a pit id passed through a form
@@ -76,15 +81,6 @@ def yes(request):
     vote.save()
 
     return redirect('photos')
-
-def new_pit(request):
-    token = ''.join(random.choices(string.ascii_uppercase + string.digits, k=5))
-    pit = Pit(token=token)
-    pit.save()
-    request.session["pit_id"] = pit.id
-
-    return render(request, 'noshpit/start_a_pit.html', {'token': token})
-
 
 # turn this into a private function that will retrieve the photo urls and
 # create a joing table between locations and a pit

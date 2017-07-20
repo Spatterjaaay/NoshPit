@@ -6,15 +6,12 @@
     This is page for those who are the first to initiate a pit for others. It will display the pit token, that will have to be distributed among the other members of the group. The future goal is to also have an option for the primary user to decide on a distance radius for how wide the restaurant search should be. Clicking the start button will redirect to the photo selection page and start the selection process. Start should be selected only when all members have joined the pit!
   </p>
 
-  {% if token %}
-      <p> This is your new pit token: {{ token }} </p>
-      <form method="post">
-        {% csrf_token %}
-        {{ form }}
-        <input type="submit" value="Submit" />
-      </form>
-  {% else %}
-      <a class="btn btn-default" href="{% url 'new_pit' %}">Click me to generate a pit ID!</a>
-  {% endif %}
+
+  <p> This is your new pit token: {{ token }} </p>
+  <form method="post">
+      {% csrf_token %}
+      {{ form }}
+      <input type="submit" value="Submit" />
+  </form>
 
 {% endblock %}
