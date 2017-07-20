@@ -14,6 +14,7 @@ def home(request):
 
 def start_a_pit(request):
     # create user and associate them with a pit
+
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
@@ -96,10 +97,15 @@ def yes(request):
     vote = Vote(location=location, user=user, pit=pit)
     vote.save()
 
+    # check for winner
+    # list of votes with users' count in them (prly named users__count)
+    # q = Vote.objects.filter(pit=request.session["pit_id"]).annotate(Count('users'))
+    # q = q.filter("users__count" = number of users)
+    # if q.length > 0, a winner!
+
     return redirect('photos')
 
-# turn this into a private function that will retrieve the photo urls and
-# create a joing table between locations and a pit
+
 def __find_photos__(form):
 
     url = 'https://maps.googleapis.com/maps/api/place'
