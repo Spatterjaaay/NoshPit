@@ -54,7 +54,6 @@ def start_a_pit(request):
     return render(request, 'noshpit/start_a_pit.html', {'form': form, 'token': token})
 
 def join_a_pit(request):
-    # create user
 
     if request.method == 'POST':
         form = JoinForm(request.POST)
@@ -63,6 +62,7 @@ def join_a_pit(request):
             pit = Pit.objects.get(token=form.cleaned_data["token"])
             request.session["pit_id"] = pit.id
 
+            # create user
             if "user_id" not in request.session:
                 user = User(pit=pit)
                 user.save()
@@ -76,7 +76,6 @@ def join_a_pit(request):
     return render(request, 'noshpit/join_a_pit.html', {'form': form})
 
 def start_noshing(request):
-    # print(request.session["pit_id"])
     pit = Pit.objects.get(id=request.session["pit_id"])
     pit_token = pit.token
     return render(request, 'noshpit/start_noshing.html', {'pit_token':pit_token})
@@ -115,6 +114,7 @@ def yes(request):
         vote.save()
     except IntegrityError:
         logging.info("This user already voted for this location")
+
     # check for winner
     # find num of users
     users = User.objects.filter(pit=request.session["pit_id"])
@@ -128,8 +128,10 @@ def yes(request):
     winner = location_votes.filter(user__count = num_users)
 
     if len(winner) > 0:
-        print("we have a winner!")
-        print(winners)
+        # print("we have a winner!")
+        # print(winners)
+        pit.winner = location
+        print(pit.winner)
 
 
     return redirect('photos')

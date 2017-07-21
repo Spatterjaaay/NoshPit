@@ -13,6 +13,7 @@ class Photo(models.Model):
 
 class Pit(models.Model):
     token = models.CharField(max_length=5)
+    winner = models.ForeignKey(Location, blank=True, null=True)
 
 class PitPhoto(models.Model):
     photo = models.ForeignKey(Photo)
