@@ -81,26 +81,31 @@ def start_noshing(request):
     return render(request, 'noshpit/start_noshing.html', {'pit_token':pit_token})
 
 def list_photos(request):
-    # finds photos assigned to a specific pit and randomizes their order
+    print("hello")
+    pit = Pit.objects.get(id=request.session["pit_id"])
+    print(pit.winner)
+    if pit.winner == None:
 
-    if "photo_index" not in request.session:
-        index = 0
-        pit = Pit.objects.get(id=request.session["pit_id"])
-        pit_photos = PitPhoto.objects.filter(pit=pit).order_by('?')
-        pit_photos = [pit_photo.id for pit_photo in pit_photos]
-        # print(pit_photos)
-        request.session["pit_photos"] = pit_photos
+        if "photo_index" not in request.session:
+            index = 0
+            # finds photos assigned to a specific pit and randomizes their order
+            pit_photos = PitPhoto.objects.filter(pit=pit).order_by('?')
+            pit_photos = [pit_photo.id for pit_photo in pit_photos]
+            # print(pit_photos)
+            request.session["pit_photos"] = pit_photos
+        else:
+            index = request.session["photo_index"] + 1
+            pit_photos = request.session["pit_photos"]
+
+        request.session["photo_index"] = index
+        pit_photo = PitPhoto.objects.get(id=pit_photos[index])
+
+        # once we hit the last index redirect to another template
+        return render(request, 'noshpit/list_photos.html', {'pit_photo': pit_photo})
+
     else:
-        index = request.session["photo_index"] + 1
-        pit_photos = request.session["pit_photos"]
+        return redirect('winner_detail')
 
-    request.session["photo_index"] = index
-    # print(pit_photos[index])
-    pit_photo = PitPhoto.objects.get(id=pit_photos[index])
-
-    # once we hit the last index redirect to another template
-
-    return render(request, 'noshpit/list_photos.html', {'pit_photo': pit_photo})
 
 def yes(request):
     # create a vote
@@ -131,10 +136,17 @@ def yes(request):
         # print("we have a winner!")
         # print(winners)
         pit.winner = location
+        pit.save()
         print(pit.winner)
 
 
     return redirect('photos')
+
+def winner_detail(request):
+    pit = Pit.objects.get(id=request.session["pit_id"])
+    winner = pit.winner
+    return render(request, 'noshpit/winner_detail.html', {'winner': winner})
+
 
 
 def __find_photos__(form):
