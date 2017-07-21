@@ -139,12 +139,21 @@ def yes(request):
         pit.save()
         print(pit.winner)
 
-
     return redirect('photos')
 
 def winner_detail(request):
     pit = Pit.objects.get(id=request.session["pit_id"])
     winner = pit.winner
+    key = settings.PLACES_KEY
+
+
+    url = 'https://maps.googleapis.com/maps/api/place'
+    details_search = '/details/json?key='
+    key = settings.PLACES_KEY
+    placeid = '&placeid=' + winner.place_id
+    response = requests.get(url + details_search + key + placeid)
+    winner = json.loads(response.text)
+
     return render(request, 'noshpit/winner_detail.html', {'winner': winner})
 
 
