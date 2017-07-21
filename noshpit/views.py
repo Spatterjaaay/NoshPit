@@ -38,18 +38,18 @@ def start_a_pit(request):
         form = PitForm()
         # print(request.session["pit_id"])
         # doesn't create a new pit on reload
-        # if "pit_id" not in request.session:
-        token = ''.join(random.choices(string.ascii_uppercase + string.digits, k=5))
-        pit = Pit(token=token)
-        pit.save()
-        request.session["pit_id"] = pit.id
+        if "pit_id" not in request.session:
+            token = ''.join(random.choices(string.ascii_uppercase + string.digits, k=5))
+            pit = Pit(token=token)
+            pit.save()
+            request.session["pit_id"] = pit.id
 
         # creates user and associates them with a pit
-        # if "user_id" not in request.session:
-        pit = Pit.objects.get(id=request.session["pit_id"])
-        user = User(pit=pit)
-        user.save()
-        request.session["user_id"] = user.id
+        if "user_id" not in request.session:
+            pit = Pit.objects.get(id=request.session["pit_id"])
+            user = User(pit=pit)
+            user.save()
+            request.session["user_id"] = user.id
 
     return render(request, 'noshpit/start_a_pit.html', {'form': form, 'token': token})
 
@@ -63,10 +63,10 @@ def join_a_pit(request):
             pit = Pit.objects.get(token=form.cleaned_data["token"])
             request.session["pit_id"] = pit.id
 
-            # if "user_id" not in request.session:
-            user = User(pit=pit)
-            user.save()
-            request.session["user_id"] = user.id
+            if "user_id" not in request.session:
+                user = User(pit=pit)
+                user.save()
+                request.session["user_id"] = user.id
 
             return redirect('start_noshing')
 
@@ -110,22 +110,24 @@ def yes(request):
     pit = Pit.objects.get(id=request.session["pit_id"])
     user = User.objects.get(id=request.session["user_id"])
     vote = Vote(location=location, user=user, pit=pit)
-    vote.save()
 
+    try:
+        vote.save()
+    except IntegrityError:
+        logging.info("This user already voted for this location")
     # check for winner
     # find num of users
     users = User.objects.filter(pit=request.session["pit_id"])
     num_users = len(users)
-    # list of votes with users' count in them (prly named users__count)
-    location_votes = Vote.objects.filter(pit=request.session["pit_id"]).annotate(Count('user'))
-    print(num_users)
-    print(users[0].id)
-    print(users[1].id)
-    print(location_votes)
-    print(location_votes[1].user__count)
-    winners = location_votes.filter(user__count = num_users)
+    # list of votes with users' count in them
+    location_votes = Vote.objects.filter(pit=request.session["pit_id"]).values("location").annotate(Count('user'))
+    # print(num_users)
+    # print(users[0].id)
+    # print(users[1].id)
+    # print(location_votes)
+    winner = location_votes.filter(user__count = num_users)
 
-    if len(winners) > 0:
+    if len(winner) > 0:
         print("we have a winner!")
         print(winners)
 
