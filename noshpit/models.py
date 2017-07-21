@@ -25,3 +25,9 @@ class Vote(models.Model):
     pit = models.ForeignKey(Pit)
     user = models.ForeignKey(User)
     location = models.ForeignKey(Location)
+
+    def __str__(self):
+        return f"{self.location.name} : {self.user.id}"
+
+    class Meta:
+        unique_together = ("pit", "user", "location")

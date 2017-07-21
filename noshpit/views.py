@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 from django.db import IntegrityError
 from django.core import serializers
+from django.db.models import Count
 
 from .models import Photo, Location, Pit, PitPhoto, User, Vote
 from pprint import pprint
@@ -10,12 +11,10 @@ import requests, logging, random, string
 import json
 
 def home(request):
+    request.session.flush()
     return render(request, 'noshpit/home.html', {})
 
 def start_a_pit(request):
-    # create user and associate them with a pit
-    user = User(pit)
-
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
@@ -37,18 +36,20 @@ def start_a_pit(request):
     # if a GET (or any other method) we'll create a blank form
     else:
         form = PitForm()
-
+        # print(request.session["pit_id"])
         # doesn't create a new pit on reload
-        if "pit_id" not in request.session:
-            token = ''.join(random.choices(string.ascii_uppercase + string.digits, k=5))
-            pit = Pit(token=token)
-            pit.save()
-            request.session["pit_id"] = pit.id
+        # if "pit_id" not in request.session:
+        token = ''.join(random.choices(string.ascii_uppercase + string.digits, k=5))
+        pit = Pit(token=token)
+        pit.save()
+        request.session["pit_id"] = pit.id
 
-        if "user_id" not in request.session:
-            user = User(pit=pit)
-            user.save()
-            request.session["user_id"] = user.id
+        # creates user and associates them with a pit
+        # if "user_id" not in request.session:
+        pit = Pit.objects.get(id=request.session["pit_id"])
+        user = User(pit=pit)
+        user.save()
+        request.session["user_id"] = user.id
 
     return render(request, 'noshpit/start_a_pit.html', {'form': form, 'token': token})
 
@@ -62,10 +63,10 @@ def join_a_pit(request):
             pit = Pit.objects.get(token=form.cleaned_data["token"])
             request.session["pit_id"] = pit.id
 
-            if "user_id" not in request.session:
-                user = User(pit=pit)
-                user.save()
-                request.session["user_id"] = user.id
+            # if "user_id" not in request.session:
+            user = User(pit=pit)
+            user.save()
+            request.session["user_id"] = user.id
 
             return redirect('start_noshing')
 
@@ -75,7 +76,7 @@ def join_a_pit(request):
     return render(request, 'noshpit/join_a_pit.html', {'form': form})
 
 def start_noshing(request):
-    print(request.session["pit_id"])
+    # print(request.session["pit_id"])
     pit = Pit.objects.get(id=request.session["pit_id"])
     pit_token = pit.token
     return render(request, 'noshpit/start_noshing.html', {'pit_token':pit_token})
@@ -85,16 +86,17 @@ def list_photos(request):
 
     if "photo_index" not in request.session:
         index = 0
-        pit_photos = PitPhoto.objects.filter(pit__token="1").order_by('?')
+        pit = Pit.objects.get(id=request.session["pit_id"])
+        pit_photos = PitPhoto.objects.filter(pit=pit).order_by('?')
         pit_photos = [pit_photo.id for pit_photo in pit_photos]
-        print(pit_photos)
+        # print(pit_photos)
         request.session["pit_photos"] = pit_photos
     else:
         index = request.session["photo_index"] + 1
         pit_photos = request.session["pit_photos"]
 
     request.session["photo_index"] = index
-    print(pit_photos[index])
+    # print(pit_photos[index])
     pit_photo = PitPhoto.objects.get(id=pit_photos[index])
 
     # once we hit the last index redirect to another template
@@ -111,10 +113,22 @@ def yes(request):
     vote.save()
 
     # check for winner
+    # find num of users
+    users = User.objects.filter(pit=request.session["pit_id"])
+    num_users = len(users)
     # list of votes with users' count in them (prly named users__count)
-    # q = Vote.objects.filter(pit=request.session["pit_id"]).annotate(Count('users'))
-    # q = q.filter("users__count" = number of users)
-    # if q.length > 0, a winner!
+    location_votes = Vote.objects.filter(pit=request.session["pit_id"]).annotate(Count('user'))
+    print(num_users)
+    print(users[0].id)
+    print(users[1].id)
+    print(location_votes)
+    print(location_votes[1].user__count)
+    winners = location_votes.filter(user__count = num_users)
+
+    if len(winners) > 0:
+        print("we have a winner!")
+        print(winners)
+
 
     return redirect('photos')
 
