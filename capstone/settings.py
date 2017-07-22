@@ -27,7 +27,7 @@ SECRET_KEY = '_p6e3z(_%tpjdn%um^cghjjqdf!g-eow#i9k8zfd2h3c&*@z07'
 PLACES_KEY = os.environ.get('DJANGO_GOOGLE_PLACES_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # LOGGING = {
 #     'version': 1,
