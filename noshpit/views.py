@@ -9,6 +9,7 @@ from pprint import pprint
 from .forms import PitForm, JoinForm
 import requests, logging, random, string
 import json
+from .restaurant import Restaurant
 
 def home(request):
     request.session.flush()
@@ -154,6 +155,14 @@ def winner_detail(request):
     response = requests.get(url + details_search + key + placeid)
     winner = json.loads(response.text)
 
+    # check if winner is an object and not an error
+    if winner["status"] != "OK":
+        logging.info(winner["error_message"])
+        # do something, because otherwise it will try to redirect with the worng winner object
+    else:
+        print("hello")
+        winner = Restaurant(winner)
+
     return render(request, 'noshpit/winner_detail.html', {'winner': winner})
 
 
@@ -209,8 +218,4 @@ def __find_photos__(form):
 
             photos.append(photo)
 
-    # randomize order of photos
-    # find a spot to save the randomized list of photos
-    # push that out to the user one at a time
-    # (another view that would return one photo and pop it and call it on every click of a button)
     return photos
