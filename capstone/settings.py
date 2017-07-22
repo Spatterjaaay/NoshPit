@@ -46,7 +46,7 @@ DEBUG = False
 # }
 logging.basicConfig(level=logging.DEBUG)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '.elasticbeanstalk.com']
 
 
 # Application definition
