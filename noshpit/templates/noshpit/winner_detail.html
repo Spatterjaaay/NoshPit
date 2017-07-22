@@ -1,15 +1,19 @@
-<h1>Winner!</h1>
+{% extends 'noshpit/base.html' %}
 
-<p>Name: {{ winner.name }}</p>
-<p>Address: {{ winner.address }}</p>
-<p>Phone num: {{ winner.number }}</p>
-<p>Rating: {{ winner.rating }}</p>
-<a href="{{ winner.map_url }}" target="_blank">Map Link</a>
-<a href="{{ winner.website }}" target="_blank">Website</a>
-<h1></h1>
-<p>Opening hours:</p>
-<ul>
-  {% for day in winner.opening_hours.weekday_text %}
-      <li>{{ day }}</li>
-  {% endfor %}
-</ul>
+{% block content %}
+  <h1>Winner!</h1>
+
+  <p>Name: {{ winner.name }}</p>
+  <p>Address: {{ winner.address }}</p>
+  <p>Phone num: {{ winner.number }}</p>
+  <p>Rating: {{ winner.rating }}</p>
+  <a href="{{ winner.map_url }}" target="_blank">Map Link</a>
+  <a href="{{ winner.website }}" target="_blank">Website</a>
+  <h1></h1>
+  <p>Opening hours:</p>
+  <ul>
+    {% for day in winner.opening_hours.weekday_text %}
+        <li>{{ day }}</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

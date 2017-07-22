@@ -37,7 +37,6 @@ def start_a_pit(request):
     # if a GET (or any other method) we'll create a blank form
     else:
         form = PitForm()
-        # print(request.session["pit_id"])
         # doesn't create a new pit on reload
         if "pit_id" not in request.session:
             token = ''.join(random.choices(string.ascii_uppercase + string.digits, k=5))
@@ -82,37 +81,36 @@ def start_noshing(request):
     return render(request, 'noshpit/start_noshing.html', {'pit_token':pit_token})
 
 def list_photos(request):
-    print("hello")
     pit = Pit.objects.get(id=request.session["pit_id"])
-    print(pit.winner)
-    if pit.winner == None:
 
-        if "photo_index" not in request.session:
-            index = 0
-            # finds photos assigned to a specific pit and randomizes their order
-            pit_photos = PitPhoto.objects.filter(pit=pit).order_by('?')
-            pit_photos = [pit_photo.id for pit_photo in pit_photos]
-            # print(pit_photos)
-            request.session["pit_photos"] = pit_photos
-        else:
-            index = request.session["photo_index"] + 1
-            pit_photos = request.session["pit_photos"]
-
-        request.session["photo_index"] = index
-        pit_photo = PitPhoto.objects.get(id=pit_photos[index])
-
-        # once we hit the last index redirect to another template
-        return render(request, 'noshpit/list_photos.html', {'pit_photo': pit_photo})
-
-    else:
+    if pit.winner:
         return redirect('winner_detail')
+
+    if "photo_index" not in request.session:
+        index = 0
+        # finds photos assigned to a specific pit and randomizes their order
+        pit_photos = PitPhoto.objects.filter(pit=pit).order_by('?')
+        pit_photos = [pit_photo.id for pit_photo in pit_photos]
+        request.session["pit_photos"] = pit_photos
+    else:
+        index = request.session["photo_index"] + 1
+        pit_photos = request.session["pit_photos"]
+
+    request.session["photo_index"] = index
+    pit_photo = PitPhoto.objects.get(id=pit_photos[index])
+
+    # once we hit the last index redirect to another template
+    return render(request, 'noshpit/list_photos.html', {'pit_photo': pit_photo})
 
 
 def yes(request):
     # create a vote
+    pit = Pit.objects.get(id=request.session["pit_id"])
+    if pit.winner:
+        return redirect('winner_detail')
+
     pit_photo = PitPhoto.objects.get(id=request.session["pit_photos"][request.session["photo_index"]])
     location = pit_photo.photo.location
-    pit = Pit.objects.get(id=request.session["pit_id"])
     user = User.objects.get(id=request.session["user_id"])
     vote = Vote(location=location, user=user, pit=pit)
 
@@ -127,18 +125,11 @@ def yes(request):
     num_users = len(users)
     # list of votes with users' count in them
     location_votes = Vote.objects.filter(pit=request.session["pit_id"]).values("location").annotate(Count('user'))
-    # print(num_users)
-    # print(users[0].id)
-    # print(users[1].id)
-    # print(location_votes)
     winner = location_votes.filter(user__count = num_users)
 
     if len(winner) > 0:
-        # print("we have a winner!")
-        # print(winners)
         pit.winner = location
         pit.save()
-        print(pit.winner)
 
     return redirect('photos')
 
@@ -160,12 +151,9 @@ def winner_detail(request):
         logging.info(winner["error_message"])
         # do something, because otherwise it will try to redirect with the worng winner object
     else:
-        print("hello")
         winner = Restaurant(winner)
 
     return render(request, 'noshpit/winner_detail.html', {'winner': winner})
-
-
 
 def __find_photos__(form):
 
