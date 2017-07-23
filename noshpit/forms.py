@@ -6,3 +6,6 @@ class PitForm(forms.Form):
        # location
 class JoinForm(forms.Form):
     token = forms.CharField(label='Token', min_length=5, max_length=5)
+
+class EmailForm(forms.Form):
+    email = forms.EmailField(label='Email')

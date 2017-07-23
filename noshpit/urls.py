@@ -10,4 +10,5 @@ urlpatterns = [
     url(r'^noshing$', views.start_noshing, name='start_noshing'),
     url(r'^yes$', views.yes, name='yes'),
     url(r'^winner_detail$', views.winner_detail, name='winner_detail'),
+    url(r'^invite$', views.invite, name='invite'),
 ]

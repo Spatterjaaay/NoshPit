@@ -6,7 +6,7 @@ from django.db.models import Count
 
 from .models import Photo, Location, Pit, PitPhoto, User, Vote
 from pprint import pprint
-from .forms import PitForm, JoinForm
+from .forms import PitForm, JoinForm, EmailForm
 import requests, logging, random, string
 import json
 from .restaurant import Restaurant
@@ -37,6 +37,7 @@ def start_a_pit(request):
     # if a GET (or any other method) we'll create a blank form
     else:
         form = PitForm()
+        inviteform = EmailForm()
         # doesn't create a new pit on reload
         if "pit_id" not in request.session:
             token = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for i in range(5))
@@ -51,7 +52,11 @@ def start_a_pit(request):
             user.save()
             request.session["user_id"] = user.id
 
-    return render(request, 'noshpit/start_a_pit.html', {'form': form, 'token': token})
+    return render(request, 'noshpit/start_a_pit.html', {'form': form, 'token': token, 'inviteform': inviteform})
+
+def invite(request):
+    pass
+
 
 def join_a_pit(request):
 
