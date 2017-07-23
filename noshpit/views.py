@@ -39,7 +39,7 @@ def start_a_pit(request):
         form = PitForm()
         # doesn't create a new pit on reload
         if "pit_id" not in request.session:
-            token = ''.join(random.choices(string.ascii_uppercase + string.digits, k=5))
+            token = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for i in range(5))
             pit = Pit(token=token)
             pit.save()
             request.session["pit_id"] = pit.id
