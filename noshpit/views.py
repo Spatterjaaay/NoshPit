@@ -127,11 +127,11 @@ def list_photos(request):
 def waiting(request):
     pit = Pit.objects.get(id=request.session["pit_id"])
     # find the user and inidicate that he has finished
-    current_user = User.objects.get(pit=pit)
+    current_user = User.objects.get(id=request.session["user_id"])
     current_user.finished = True
     current_user.save()
     # check if all member of the pit have finished, if yes, redirect to no winner page
-    pit_users = Users.objects.filter(pit=pit)
+    pit_users = User.objects.filter(pit=pit)
     finished_pit_users = pit_users.filter(finished=True)
     if len(pit_users) == len(finished_pit_users):
         return redirect('no_winner')
@@ -140,6 +140,18 @@ def waiting(request):
         return redirect('winner_detail')
 
     return render(request, 'noshpit/waiting.html', {})
+
+def no_winner(request):
+    pit = Pit.objects.get(id=request.session["pit_id"])
+    # if no winner by voting, highest voted for location is recorded as a winner
+    location_votes = Vote.objects.filter(pit=request.session["pit_id"]).annotate(Count('user')).order_by('user__count')
+    print(location_votes)
+    winner = location_votes[0]
+    print(winner)
+    pit.winner = winner.location
+    pit.save()
+
+    return render(request, 'noshpit/no_winner.html', {})
 
 
 def yes(request):

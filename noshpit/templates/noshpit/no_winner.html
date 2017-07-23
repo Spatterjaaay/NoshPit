@@ -1,0 +1,12 @@
+{% extends 'noshpit/base.html' %}
+
+{% block content %}
+  <h1>You and your fellow hungry noshers have failed at reaching a consensus!</h1>
+  <p>Here are your options:</p>
+  <ol>
+    <li><a href="{% url 'home' %}">Start a new pit! You could try widening your search ;)</a></li>
+
+    <li><a href="{% url 'winner_detail' %}">Go to the location with highest vote count</a></li>
+  </ol>
+
+{% endblock %}

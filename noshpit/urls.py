@@ -12,5 +12,7 @@ urlpatterns = [
     url(r'^winner_detail$', views.winner_detail, name='winner_detail'),
     url(r'^invite$', views.invite, name='invite'),
     url(r'^waiting$', views.waiting, name='waiting'),
+    url(r'^no_winner$', views.no_winner, name='no_winner'),
+
 
 ]
