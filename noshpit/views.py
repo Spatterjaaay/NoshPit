@@ -126,9 +126,19 @@ def list_photos(request):
 
 def waiting(request):
     pit = Pit.objects.get(id=request.session["pit_id"])
-
+    # find the user and inidicate that he has finished
+    current_user = User.objects.get(pit=pit)
+    current_user.finished = True
+    current_user.save()
+    # check if all member of the pit have finished, if yes, redirect to no winner page
+    pit_users = Users.objects.filter(pit=pit)
+    finished_pit_users = pit_users.filter(finished=True)
+    if len(pit_users) == len(finished_pit_users):
+        return redirect('no_winner')
+    # check if winner was selected
     if pit.winner:
         return redirect('winner_detail')
+
     return render(request, 'noshpit/waiting.html', {})
 
 
