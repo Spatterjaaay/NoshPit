@@ -72,7 +72,6 @@ def invite(request):
 
     return redirect('start')
 
-
 def join_a_pit(request):
 
     if request.method == 'POST':
@@ -117,7 +116,7 @@ def list_photos(request):
         pit_photos = request.session["pit_photos"]
 
     # once we hit the last index without selecting a winner yet, redirect to a waiting page
-    if len(pit_photos) == (index + 1)
+    if len(pit_photos) == (index + 1):
         return redirect('waiting')
 
     request.session["photo_index"] = index
@@ -130,6 +129,8 @@ def waiting(request):
 
     if pit.winner:
         return redirect('winner_detail')
+    return render(request, 'noshpit/waiting.html', {})
+
 
 def yes(request):
     # create a vote
@@ -164,9 +165,6 @@ def yes(request):
 def winner_detail(request):
     pit = Pit.objects.get(id=request.session["pit_id"])
     winner = pit.winner
-    key = settings.PLACES_KEY
-
-
     url = 'https://maps.googleapis.com/maps/api/place'
     details_search = '/details/json?key='
     key = settings.PLACES_KEY
