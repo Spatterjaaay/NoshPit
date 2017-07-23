@@ -116,12 +116,20 @@ def list_photos(request):
         index = request.session["photo_index"] + 1
         pit_photos = request.session["pit_photos"]
 
+    # once we hit the last index without selecting a winner yet, redirect to a waiting page
+    if len(pit_photos) == (index + 1)
+        return redirect('waiting')
+
     request.session["photo_index"] = index
     pit_photo = PitPhoto.objects.get(id=pit_photos[index])
 
-    # once we hit the last index redirect to another template
     return render(request, 'noshpit/list_photos.html', {'pit_photo': pit_photo})
 
+def waiting(request):
+    pit = Pit.objects.get(id=request.session["pit_id"])
+
+    if pit.winner:
+        return redirect('winner_detail')
 
 def yes(request):
     # create a vote
