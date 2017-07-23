@@ -10,7 +10,7 @@
 
   <p> This is your new pit token: {{ token }} </p>
 
-  <form action="{{ url invite }}" method="post">
+  <form action="{% url 'invite' %}" method="post">
       {% csrf_token %}
       {{ inviteform }}
       <input type="submit" value="Send Invitation" />

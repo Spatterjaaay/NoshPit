@@ -1,0 +1,5 @@
+To: {{ destination }}
+From: {{ sender }}
+Subject: Join the pit
+
+The token is: {{ token }}

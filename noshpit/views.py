@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.template.loader import render_to_string
 from django.conf import settings
 from django.db import IntegrityError
 from django.core import serializers
@@ -8,6 +9,7 @@ from .models import Photo, Location, Pit, PitPhoto, User, Vote
 from pprint import pprint
 from .forms import PitForm, JoinForm, EmailForm
 import requests, logging, random, string
+from .sendmail import sendmail
 import json
 from .restaurant import Restaurant
 
@@ -44,6 +46,10 @@ def start_a_pit(request):
             pit = Pit(token=token)
             pit.save()
             request.session["pit_id"] = pit.id
+            request.session["token"] = token
+        else:
+            # in case user reloads, we still need to pass a token to the view
+            token = request.session["token"]
 
         # creates user and associates them with a pit
         if "user_id" not in request.session:
@@ -55,7 +61,16 @@ def start_a_pit(request):
     return render(request, 'noshpit/start_a_pit.html', {'form': form, 'token': token, 'inviteform': inviteform})
 
 def invite(request):
-    pass
+    if request.method == 'POST':
+        form = EmailForm(request.POST)
+        if form.is_valid():
+            token = request.session["token"]
+            sender = 'noreply@noshpit.net'
+            destination = form.cleaned_data["email"]
+            message = render_to_string('noshpit/invite.txt', {'sender': sender, 'destination': destination,'token': token})
+            sendmail(sender, destination, message)
+
+    return redirect('start')
 
 
 def join_a_pit(request):
