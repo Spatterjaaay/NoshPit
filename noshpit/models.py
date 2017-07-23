@@ -21,6 +21,7 @@ class PitPhoto(models.Model):
 
 class User(models.Model):
     pit = models.ForeignKey(Pit, on_delete=models.CASCADE)
+    finished = models.BooleanField(default=False)
 
 class Vote(models.Model):
     pit = models.ForeignKey(Pit)
