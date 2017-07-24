@@ -1,4 +1,9 @@
 {% extends 'noshpit/base.html' %}
+{% load staticfiles %}
+
+{% block media %}
+    <script src="{% static 'js/swipe.js' %}"></script>
+{% endblock %}
 
 {% block content %}
 
