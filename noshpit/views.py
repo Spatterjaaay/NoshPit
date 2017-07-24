@@ -94,6 +94,14 @@ def join_a_pit(request):
 
     return render(request, 'noshpit/join_a_pit.html', {'form': form})
 
+def beg_wait(request):
+    pit = Pit.objects.get(id=request.session["pit_id"])
+
+    if pit.started == True:
+        redirect('photos')
+
+    return render(request, 'noshpit/beg_wait.html', {})
+
 def start_noshing(request):
     pit = Pit.objects.get(id=request.session["pit_id"])
     pit_token = pit.token
@@ -117,14 +125,14 @@ def list_photos(request):
 
     # once we hit the last index without selecting a winner yet, redirect to a waiting page
     if len(pit_photos) == (index + 1):
-        return redirect('waiting')
+        return redirect('end_wait')
 
     request.session["photo_index"] = index
     pit_photo = PitPhoto.objects.get(id=pit_photos[index])
 
     return render(request, 'noshpit/list_photos.html', {'pit_photo': pit_photo})
 
-def waiting(request):
+def end_wait(request):
     pit = Pit.objects.get(id=request.session["pit_id"])
     # find the user and inidicate that he has finished
     current_user = User.objects.get(id=request.session["user_id"])
@@ -133,13 +141,14 @@ def waiting(request):
     # check if all member of the pit have finished, if yes, redirect to no winner page
     pit_users = User.objects.filter(pit=pit)
     finished_pit_users = pit_users.filter(finished=True)
+
     if len(pit_users) == len(finished_pit_users):
         return redirect('no_winner')
     # check if winner was selected
     if pit.winner:
         return redirect('winner_detail')
 
-    return render(request, 'noshpit/waiting.html', {})
+    return render(request, 'noshpit/end_wait.html', {})
 
 def no_winner(request):
     pit = Pit.objects.get(id=request.session["pit_id"])

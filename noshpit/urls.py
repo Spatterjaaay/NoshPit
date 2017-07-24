@@ -11,7 +11,8 @@ urlpatterns = [
     url(r'^yes$', views.yes, name='yes'),
     url(r'^winner_detail$', views.winner_detail, name='winner_detail'),
     url(r'^invite$', views.invite, name='invite'),
-    url(r'^waiting$', views.waiting, name='waiting'),
+    url(r'^end_wait$', views.end_wait, name='end_wait'),
+    url(r'^beg_wait$', views.beg_wait, name='beg_wait'),
     url(r'^no_winner$', views.no_winner, name='no_winner'),
 
 
