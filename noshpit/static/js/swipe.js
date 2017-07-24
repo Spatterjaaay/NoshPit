@@ -1,8 +1,12 @@
-document.addEventListener('touchstart', handleTouchStart, false);
-document.addEventListener('touchmove', handleTouchMove, false);
+document.addEventListener("DOMContentLoaded", function(event) {
+    var el = document.getElementById("food-photo");
 
-var xDown = null;
-var yDown = null;
+    el.addEventListener('touchstart', handleTouchStart, false);
+    el.addEventListener('touchmove', handleTouchMove, false);
+
+    var xDown = null;
+    var yDown = null;
+});
 
 function handleTouchStart(evt) {
     xDown = evt.touches[0].clientX;
