@@ -144,7 +144,8 @@ def waiting(request):
 def no_winner(request):
     pit = Pit.objects.get(id=request.session["pit_id"])
     # if no winner by voting, highest voted for location is recorded as a winner
-    location_votes = Vote.objects.filter(pit=request.session["pit_id"]).annotate(Count('user')).order_by('user__count')
+    # location_votes = Vote.objects.filter(pit=request.session["pit_id"]).annotate(Count('user')).order_by('user__count')
+    location_votes = Location.objects.filter(vote__pit=request.session["pit_id"]).annotate(Count("vote")).order_by("-vote__count")
     print(location_votes)
     winner = location_votes[0]
     print(winner)
