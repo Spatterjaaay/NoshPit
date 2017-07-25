@@ -87,7 +87,7 @@ def join_a_pit(request):
                 user.save()
                 request.session["user_id"] = user.id
 
-            return redirect('start_noshing')
+            return redirect('beg_wait')
 
     else:
         form = JoinForm()
@@ -98,7 +98,7 @@ def beg_wait(request):
     pit = Pit.objects.get(id=request.session["pit_id"])
 
     if pit.started == True:
-        redirect('photos')
+        return redirect('photos')
 
     return render(request, 'noshpit/beg_wait.html', {})
 
@@ -112,6 +112,11 @@ def list_photos(request):
 
     if pit.winner:
         return redirect('winner_detail')
+
+    # pitmaster starts the pit which will allow joining users to start voting
+    if not pit.started:
+        pit.started = True
+        pit.save()
 
     if "photo_index" not in request.session:
         index = 0
