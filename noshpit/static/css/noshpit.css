@@ -25,15 +25,6 @@ body {
   -o-background-size: cover;
 }
 
-.background-join {
-  background: url("../images/food15.jpg") no-repeat center center fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  background-size: cover;
-  -o-background-size: cover;
-}
-
-
 .button {
     background-color: transparent;
     color: white;
@@ -79,4 +70,18 @@ main.start {
 .save {
   padding: 0.4% 1em;
   margin: 0;
+}
+
+/*join a pit*/
+
+.background-join {
+  background: url("../images/food17b.jpeg") no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  -o-background-size: cover;
+}
+
+.join {
+  padding: 15% 22%;
 }
