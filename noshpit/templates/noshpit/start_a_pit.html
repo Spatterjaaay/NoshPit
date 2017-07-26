@@ -24,33 +24,29 @@
             {% for field in inviteform %}
               <label class="col-sm-1 col-form-label" for="{{ field.name }}">{{ field.label }}</label>
               {{ field }}
-              {% endfor %}
+            {% endfor %}
               <input type="submit" class="save button btn btn-default" value="Send Invitation" />
             </div>
           </form>
         </div>
       </li>
-<!-- 
-      <div class="container">
-        <form>
-          <div class="form-group row">
-            <label for="inputEmail3" class="col-sm-1 col-form-label">Email</label>
-            <div class="col-sm-10">
-            <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
-            </div>
-          </div>
-        </form>
-      </div> -->
 
       <li>
         <p>
           Select the maximum distance you are willing to scavenge for food from your current location.
-          <form class="form" method="post">
-              {% csrf_token %}
-              {{ form }}
-              <input type="submit" class="save button btn btn-default" value="Submit" />
-          </form>
         </p>
+        <div class="container">
+          <form class="form" method="post">
+            <div class="form-group row">
+              {% csrf_token %}
+              {% for field in form %}
+                <label class="col-sm-1 col-form-label" for="{{ field.name }}">{{ field.label }}</label>
+                {{ field }}
+              {% endfor %}
+              <input type="submit" class="save button btn btn-default" value="Submit" />
+            </div>
+          </form>
+        </div>
       </li>
     </ol>
   </main>
