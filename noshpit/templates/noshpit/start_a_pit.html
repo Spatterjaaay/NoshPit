@@ -1,12 +1,15 @@
 {% extends 'noshpit/base.html' %}
+{% load staticfiles %}
 
 {% block content %}
 <body class="background-start">
   <!-- Navigation -->
   <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-    <a href="/">Nosh Pit!</a>
+    <a href="/">
+      <img src="{% static 'images/pit_icon.png' %}" alt="noshpit_logo" height="42" width="42">
+    </a>
   </nav>
-  <section>
+  <main class=start>
     <h1>Start your pit!</h1>
     <ol>
       <li>
@@ -14,23 +17,42 @@
           Take the pit token a distribute it among your pit members. You can send it to as many noshers as you wish.
         </p>
         <p> The pit token is: {{ token }} </p>
-        <form action="{% url 'invite' %}" method="post">
+        <div class="container">
+          <form class="form" action="{% url 'invite' %}" method="post">
+            <div class="form-group row">
             {% csrf_token %}
-            {{ inviteform }}
-            <input type="submit" value="Send Invitation" />
-        </form>
+            {% for field in inviteform %}
+              <label class="col-sm-1 col-form-label" for="{{ field.name }}">{{ field.label }}</label>
+              {{ field }}
+              {% endfor %}
+              <input type="submit" class="save button btn btn-default" value="Send Invitation" />
+            </div>
+          </form>
+        </div>
       </li>
+<!-- 
+      <div class="container">
+        <form>
+          <div class="form-group row">
+            <label for="inputEmail3" class="col-sm-1 col-form-label">Email</label>
+            <div class="col-sm-10">
+            <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+            </div>
+          </div>
+        </form>
+      </div> -->
+
       <li>
         <p>
           Select the maximum distance you are willing to scavenge for food from your current location.
-          <form method="post">
+          <form class="form" method="post">
               {% csrf_token %}
               {{ form }}
-              <input type="submit" value="Submit" />
+              <input type="submit" class="save button btn btn-default" value="Submit" />
           </form>
         </p>
       </li>
     </ol>
-  </section>
+  </main>
 </body>
 {% endblock %}

@@ -1,16 +1,26 @@
 {% extends 'noshpit/base.html' %}
+{% load staticfiles %}
 
 {% block content %}
-  <h1>Jooooin!</h1>
+<body class="background-join">
+  <!-- Navigation -->
+  <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <a href="/">
+      <img src="{% static 'images/pit_icon.png' %}" alt="noshpit_logo" height="42" width="42">
+    </a>
+  </nav>
+  <h1>Welcome and Join the pit, dear Nosher!</h1>
 
   <p>
       This is page for those who are joing an already existing pit, are thereofre not the primary user. It will display an input field for the pit token, that they will receive form the primary user. Clicking the start button will redirect to the photo selection page and start the selection process. Start should be selected only when all members have joined the pit!
   </p>
 
   <!-- form that let's user enter a pit token -->
-  <form method="post">
+  
+  <form class="form" method="post">
       {% csrf_token %}
       {{ form }}
       <input type="submit" value="Submit" />
   </form>
+</body>
 {% endblock %}

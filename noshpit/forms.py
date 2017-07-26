@@ -1,11 +1,10 @@
 from django import forms
 
 class PitForm(forms.Form):
-    distance = forms.IntegerField(label='Distance', min_value=500, max_value=5000)
-       # any validation for no past date?
-       # location
+    distance = forms.IntegerField(label='Distance', min_value=500, max_value=5000, widget=forms.TextInput(attrs={'placeholder': 'Enter Distance in m'}))
+
 class JoinForm(forms.Form):
-    token = forms.CharField(label='Token', min_length=5, max_length=5)
+    token = forms.CharField(label='Token', min_length=5, max_length=5, widget=forms.TextInput(attrs={'placeholder': 'Enter Token'}))
 
 class EmailForm(forms.Form):
-    email = forms.EmailField(label='Email')
+    email = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'placeholder': 'Enter Email', 'class': 'form-control col-sm-5','id': 'inputEmail3'}))

@@ -18,21 +18,15 @@ body {
   background-position: center center;
   opacity: 0.9;
   height: 85%;*/
-  background: url("../images/background_test.jpg") no-repeat center center fixed;
+  background: url("../images/background1.jpg") no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   background-size: cover;
   -o-background-size: cover;
 }
 
-.background-start {
-  /*background: url("../images/food11.jpg");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
-  opacity: 0.9;
-  height: 85%;*/
-  background: url("../images/food10.jpg") no-repeat center center fixed;
+.background-join {
+  background: url("../images/food15.jpg") no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   background-size: cover;
@@ -65,5 +59,28 @@ body {
 
 
 .empty {
-  height: 58%;
+  height: 56%;
 }
+
+/*start a pit*/
+
+.background-start {
+  background: url("../images/food10b.jpg") no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  -o-background-size: cover;
+}
+
+main.start {
+  padding: 5%;
+}
+
+.save {
+  padding: 0.4% 1em;
+  margin: 0;
+}
+
+/*.form-control {
+  min-width: auto;
+}*/
