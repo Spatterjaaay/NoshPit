@@ -85,3 +85,17 @@ main.start {
 .join {
   padding: 15% 22%;
 }
+
+/*waiting room*/
+
+.beg-wait {
+  padding: 20% 10% 0% 50%;
+}
+
+.background-wait {
+  background: url("../images/food19b.jpeg") no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  -o-background-size: cover;
+}
