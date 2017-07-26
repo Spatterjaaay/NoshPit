@@ -6,13 +6,29 @@
 {% endblock %}
 
 {% block content %}
-
-    <h1>{{ pit_photo.photo.location}}</h1>
-
-    <div class="photo" id="food-photo">
-        <img src="{{ pit_photo.photo.url }}" alt="food-photo" />
-    </div>
-
-<a class="btn btn-default" href="{% url 'yes' %}">Yes! :-)</a>
-<a class="btn btn-default" href="{% url 'photos' %}">No >.<</a>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <a href="/">
+      <img src="{% static 'images/pit_icon.png' %}" alt="noshpit_logo" height="42" width="42">
+    </a>
+  </nav>
+  <main>
+    <div class="container" >
+      <div class="col center-block text-center">
+        <h1>{{ pit_photo.photo.location}}</h1>
+      </div>
+      <div class="row col center-block text-center">
+        <div>
+          <a class="button no btn btn-default" href="{% url 'photos' %}">No >.<</a>
+        </div>
+        <div class="photo" id="food-photo">
+          <img src="{{ pit_photo.photo.url }}" alt="food-photo" />
+        </div>
+        <div>
+          <a class="button yes btn btn-default" href="{% url 'yes' %}">Yes! :-)</a>
+        </div>
+      </div>
+  </main>
+</body>
 {% endblock %}

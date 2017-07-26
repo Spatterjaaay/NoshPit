@@ -249,10 +249,10 @@ def __find_photos__(form):
         details = json.loads(response.text)
 
         for detail in details["result"]["photos"]:
-            max_height = '&maxheight=600'
+            max_width = '&maxwidth=900'
             photoreference = '&photoreference=' + detail["photo_reference"]
 
-            response = requests.get(url + photo_search + key + max_height + photoreference, allow_redirects=False)
+            response = requests.get(url + photo_search + key + max_width + photoreference, allow_redirects=False)
             photo_url = response.headers["Location"]
 
             #  creates a photo object

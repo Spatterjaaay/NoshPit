@@ -5,7 +5,7 @@ body {
   color: white;
   background-color: black;
 }
-/*homepage*/
+/* homepage */
 body {
   height: 100%;
   /*margin-top: 50px;*/
@@ -53,7 +53,7 @@ body {
   height: 56%;
 }
 
-/*start a pit*/
+/* start a pit */
 
 .background-start {
   background: url("../images/food10b.jpg") no-repeat center center fixed;
@@ -72,7 +72,7 @@ main.start {
   margin: 0;
 }
 
-/*join a pit*/
+/* join a pit */
 
 .background-join {
   background: url("../images/food17b.jpeg") no-repeat center center fixed;
@@ -86,7 +86,7 @@ main.start {
   padding: 15% 22%;
 }
 
-/*waiting room*/
+/* waiting room */
 
 .beg-wait {
   padding: 20% 10% 0% 50%;
@@ -98,4 +98,13 @@ main.start {
   -moz-background-size: cover;
   background-size: cover;
   -o-background-size: cover;
+}
+
+/* list_photos */
+.yes {
+  max-width: auto;
+}
+
+.no {
+  max-width: auto;
 }
