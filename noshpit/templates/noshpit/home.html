@@ -1,8 +1,21 @@
 {% extends 'noshpit/base.html' %}
+{% load staticfiles %}
 
 {% block content %}
-  <h1>HellooooooO!!!</h1>
-
-  <h1><a href="{% url 'start' %}">Start a Pit</a></h1>
-  <h1><a href="{% url 'join' %}">Join a pit</a></h1>
+<body class="background">
+  <!-- Navigation -->
+  <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <a href="/">Nosh Pit!</a>
+  </nav>
+  <div class="empty"></div>
+  <div class="container" >
+    <div class="row align-items-center">
+      <div class="col center-block text-center button-group">
+          <a role="button" class="button btn btn-primary-outline" href="{% url 'start' %}">Start a Pit</a>
+          <a role="button" class="button btn btn-primary-outline" href="{% url 'join' %}">Join a pit</a>
+      </div>
+    </div>
+  </div>
+  <script src="{% static 'bootstrap/bootstrap.js' %}"></script>
+</body>
 {% endblock %}

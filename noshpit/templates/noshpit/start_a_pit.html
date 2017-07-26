@@ -1,25 +1,36 @@
 {% extends 'noshpit/base.html' %}
 
 {% block content %}
-  <h1>Staaaaaart a pit!</h1>
-  <p>
-    This is page for those who are the first to initiate a pit for others. It will display the pit token, that will have to be distributed among the other members of the group. The future goal is to also have an option for the primary user to decide on a distance radius for how wide the restaurant search should be. Clicking the start button will redirect to the photo selection page and start the selection process. Start should be selected only when all members have joined the pit!
-  </p>
-
-
-
-  <p> This is your new pit token: {{ token }} </p>
-
-  <form action="{% url 'invite' %}" method="post">
-      {% csrf_token %}
-      {{ inviteform }}
-      <input type="submit" value="Send Invitation" />
-  </form>
-
-  <form method="post">
-      {% csrf_token %}
-      {{ form }}
-      <input type="submit" value="Submit" />
-  </form>
-
+<body class="background-start">
+  <!-- Navigation -->
+  <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <a href="/">Nosh Pit!</a>
+  </nav>
+  <section>
+    <h1>Start your pit!</h1>
+    <ol>
+      <li>
+        <p>
+          Take the pit token a distribute it among your pit members. You can send it to as many noshers as you wish.
+        </p>
+        <p> The pit token is: {{ token }} </p>
+        <form action="{% url 'invite' %}" method="post">
+            {% csrf_token %}
+            {{ inviteform }}
+            <input type="submit" value="Send Invitation" />
+        </form>
+      </li>
+      <li>
+        <p>
+          Select the maximum distance you are willing to scavenge for food from your current location.
+          <form method="post">
+              {% csrf_token %}
+              {{ form }}
+              <input type="submit" value="Submit" />
+          </form>
+        </p>
+      </li>
+    </ol>
+  </section>
+</body>
 {% endblock %}

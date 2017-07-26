@@ -1,24 +1,15 @@
 {% load staticfiles %}
-<html>
+<html  lang="en">
   <head>
+    <meta charset="utf-8">
     <link rel="stylesheet" href="{% static 'bootstrap/bootstrap.css' %}">
     <link rel="stylesheet" href="{% static 'bootstrap/bootstrap.js' %}">
     <link rel="stylesheet" href="{% static 'css/noshpit.css' %}">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous"> -->
     {% block media %}
     {% endblock %}
     <title>NoshPit</title>
   </head>
-  <body>
-    <div class="page-header">
-      <h1><a href="/">Nosh Pit!</a></h1>
-    </div>
-    <div class="content container">
-        <div class="row">
-            <div class="col-md-8">
-            {% block content %}
-            {% endblock %}
-            </div>
-        </div>
-    </div>
-  </body>
+    {% block content %}
+    {% endblock %}
 </html>
