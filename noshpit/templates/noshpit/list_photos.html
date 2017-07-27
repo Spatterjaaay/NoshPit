@@ -18,14 +18,14 @@
       <div class="col center-block text-center">
         <h1>{{ pit_photo.photo.location}}</h1>
       </div>
-      <div class="row col center-block text-center">
-        <div>
+      <div class="row align-items-center">
+        <div class="col text-center">
           <a class="button no btn btn-default" href="{% url 'photos' %}">No >.<</a>
         </div>
-        <div class="photo" id="food-photo">
-          <img src="{{ pit_photo.photo.url }}" alt="food-photo" />
+        <div class="col-md-8 photo text-center" id="food-photo">
+          <img class="food-pic" src="{{ pit_photo.photo.url }}" alt="food-photo" height="500"/>
         </div>
-        <div>
+        <div class="col align-items-center text-center">
           <a class="button yes btn btn-default" href="{% url 'yes' %}">Yes! :-)</a>
         </div>
       </div>

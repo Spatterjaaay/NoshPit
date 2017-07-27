@@ -102,9 +102,37 @@ main.start {
 
 /* list_photos */
 .yes {
-  max-width: auto;
+  padding: 20% 15%;
+  border: 2px solid green;
+  border-radius: 150px;
 }
 
 .no {
-  max-width: auto;
+  padding: 20% 15%;
+  border: 2px solid red;
+  border-radius: 150px;
+
 }
+
+#food-photo {
+  max-height: 800px;
+  max-width: 100%:
+}
+
+.food-pic {
+  max-width: 100%;
+}
+/*.button {
+    background-color: transparent;
+    color: white;
+    border: 2px solid yellow;
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.4s;
+    padding: 1% 5em;
+    margin: 1%;
+}
+
+.button:hover {
+    background-color: yellow;
+    color: black;
+}*/

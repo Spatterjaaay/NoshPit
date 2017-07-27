@@ -160,9 +160,11 @@ def no_winner(request):
     # if no winner by voting, highest voted for location is recorded as a winner
     # location_votes = Vote.objects.filter(pit=request.session["pit_id"]).annotate(Count('user')).order_by('user__count')
     location_votes = Location.objects.filter(vote__pit=request.session["pit_id"]).annotate(Count("vote")).order_by("-vote__count")
-    pit.winner = location_votes[0]
-    pit.save()
 
+    if len(location_votes) > 0:
+        pit.winner = location_votes[0]
+        pit.save()
+    
     return render(request, 'noshpit/no_winner.html', {})
 
 
