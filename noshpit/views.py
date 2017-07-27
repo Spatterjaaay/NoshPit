@@ -164,8 +164,8 @@ def no_winner(request):
     if len(location_votes) > 0:
         pit.winner = location_votes[0]
         pit.save()
-    
-    return render(request, 'noshpit/no_winner.html', {})
+
+    return render(request, 'noshpit/no_winner.html', {'pit': pit})
 
 
 def yes(request):

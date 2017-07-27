@@ -1,12 +1,21 @@
 {% extends 'noshpit/base.html' %}
+{% load staticfiles %}
 
 {% block content %}
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <a href="/">
+      <img src="{% static 'images/pit_icon.png' %}" alt="noshpit_logo" height="42" width="42">
+    </a>
+  </nav>
   <h1>You and your fellow hungry noshers have failed at reaching a consensus!</h1>
   <p>Here are your options:</p>
   <ol>
-    <li><a href="{% url 'home' %}">Start a new pit! You could try widening your search ;)</a></li>
-
-    <li><a href="{% url 'winner_detail' %}">Go to the location with highest vote count</a></li>
+    <ul><a href="{% url 'home' %}">Start a new pit! You could try widening your search ;)</a></li>
+    {% if pit.winner %}
+      <ul><a href="{% url 'winner_detail' %}">Go to the location with highest vote count</a></li>
+    {% endif %}
   </ol>
-
+</body>
 {% endblock %}
